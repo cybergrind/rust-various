@@ -82,7 +82,10 @@ Currently, the project has a minimal structure:
 - No tests or benchmarks yet implemented
 
 ## Current Task
-Working on: [Greeting CLI Task](ai_task/rust_learning/greeting_cli_task.md) - Creating a simple CLI tool with clap
+Working on: [Word Count CLI Task](ai_task/rust_learning/wordcount_cli_task.md) - File I/O and error handling with anyhow
+
+## Completed Tasks
+- ✓ [Greeting CLI Task](ai_task/rust_learning/greeting_cli_task.md) - Simple CLI tool with clap
 
 ## Project Evolution Strategy
 
