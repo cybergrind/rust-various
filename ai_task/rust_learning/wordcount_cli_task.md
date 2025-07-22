@@ -75,3 +75,6 @@ Create a line/word/character counter tool using `clap` for CLI parsing and `anyh
 - Practice with iterators (lines(), split_whitespace())
 - Learn how anyhow improves error handling ergonomics
 - Consider defaulting to all counts when no flags specified
+
+## Next Task
+After completion: [Stack Inspector Task](stack_inspector_task.md) - Low-level programming with naked functions

@@ -87,6 +87,9 @@ Working on: [Word Count CLI Task](ai_task/rust_learning/wordcount_cli_task.md) -
 ## Completed Tasks
 - ✓ [Greeting CLI Task](ai_task/rust_learning/greeting_cli_task.md) - Simple CLI tool with clap
 
+## Planned Tasks
+- [Stack Inspector Task](ai_task/rust_learning/stack_inspector_task.md) - Low-level programming with naked functions (after wordcount)
+
 ## Project Evolution Strategy
 
 As we progress through learning exercises:
