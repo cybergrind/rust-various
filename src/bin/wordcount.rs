@@ -134,6 +134,11 @@ fn print_stats(stats: &Stats) {
         print_file_stat(file);
     }
 
+    // print total only if there are more than one file
+    if stats.files.len() == 1 {
+        return
+    }
+
     if let Some(total_lines) = stats.total_lines {
         print!("{}", total_lines)
     }
@@ -148,6 +153,10 @@ fn print_stats(stats: &Stats) {
 
 fn main() {
     let mut args = Args::parse();
+    if args.files.is_empty() {
+        eprintln!("No files provided.");
+        std::process::exit(1);
+    }
 
     let show_all = !args.lines && !args.words && !args.chars;
     if show_all {
@@ -162,5 +171,43 @@ fn main() {
             eprintln!("\nExit(1)\nError: {}", e);
             std::process::exit(1);
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Cursor;
+
+    #[test]
+    fn test_basic_calculations() {
+        let input = "line1\nword2 word3\nline4";
+        let reader = Cursor::new(input);
+        let args = Args {
+            lines: true,
+            words: true,
+            chars: true,
+            files: vec![],
+        };
+        let stats = calculate_file_stats("file1.txt", reader, &args).unwrap();
+        assert_eq!(stats.lines, Some(3));
+        assert_eq!(stats.words, Some(4));
+        assert_eq!(stats.chars, Some(24));
+    }
+
+    #[test]
+    fn test_selected_calculations() {
+        let input = "line1\nword2 word3\nline4";
+        let reader = Cursor::new(input);
+        let args = Args {
+            lines: false,
+            words: true,
+            chars: true,
+            files: vec![],
+        };
+        let stats = calculate_file_stats("file1.txt", reader, &args).unwrap();
+        assert_eq!(stats.lines, None);
+        assert_eq!(stats.words, Some(4));
+        assert_eq!(stats.chars, Some(24));
     }
 }
