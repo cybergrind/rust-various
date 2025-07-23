@@ -82,13 +82,16 @@ Currently, the project has a minimal structure:
 - No tests or benchmarks yet implemented
 
 ## Current Task
-Working on: [Word Count CLI Task](ai_task/rust_learning/wordcount_cli_task.md) - File I/O and error handling with anyhow
+Ready to start: [Stack Inspector Task](ai_task/rust_learning/stack_inspector_task.md) - Low-level programming with naked functions
 
 ## Completed Tasks
 - ✓ [Greeting CLI Task](ai_task/rust_learning/greeting_cli_task.md) - Simple CLI tool with clap
+- ✓ [Word Count CLI Task](ai_task/rust_learning/wordcount_cli_task.md) - File I/O and error handling with anyhow (with aligned output)
 
-## Planned Tasks
-- [Stack Inspector Task](ai_task/rust_learning/stack_inspector_task.md) - Low-level programming with naked functions (after wordcount)
+## Learning Progress Notes
+- User prefers to implement first, then iterate with guidance
+- Completed wordcount with proper formatting ({:>7} for lines, {:>8} for words/chars)
+- Successfully learned anyhow, itertools (partition_map, fold_options), and testing
 
 ## Project Evolution Strategy
 

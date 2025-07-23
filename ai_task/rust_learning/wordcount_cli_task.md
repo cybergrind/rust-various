@@ -50,19 +50,20 @@ Create a line/word/character counter tool using `clap` for CLI parsing and `anyh
 - [x] Set up binary target in Cargo.toml
 - [x] Define Args struct with all flags (lines, words, chars)
 - [x] Support multiple files via Vec<String>
-- [ ] Implement file reading with error handling
-- [ ] Add counting logic (lines, words, chars)
-- [ ] Handle case where no flags provided (show all)
-- [ ] Handle multiple files with totals
-- [ ] Add proper error context with anyhow
-- [ ] Write unit tests for counting functions
-- [ ] Write integration tests for CLI
+- [x] Implement file reading with error handling
+- [x] Add counting logic (lines, words, chars)
+- [x] Handle case where no flags provided (show all)
+- [x] Handle multiple files with totals
+- [x] Add proper error context with anyhow
+- [x] Write unit tests for counting functions
+- [x] Write integration tests for CLI
+- [x] Improve output formatting with aligned columns
 
 ## Current Status
-- Basic CLI structure is complete with stub implementation
-- All dependencies are added
-- Ready to implement file reading and counting logic
-- Next: Add file I/O with anyhow error handling
+- Task completed successfully!
+- All requirements implemented and tested
+- Output formatting improved with {:>7} and {:>8} alignment
+- Tests passing for both unit and integration tests
 
 ## Implementation Details
 - Binary target: `src/bin/wordcount.rs`
@@ -70,11 +71,20 @@ Create a line/word/character counter tool using `clap` for CLI parsing and `anyh
 - Files stored as Vec<String> for multiple file support
 - Three boolean flags for count types
 
-## Notes
-- Good opportunity to learn about `Result<T, E>` and `?` operator
-- Practice with iterators (lines(), split_whitespace())
-- Learn how anyhow improves error handling ergonomics
-- Consider defaulting to all counts when no flags specified
+## Final Implementation Notes
+- Used BufReader for efficient file processing
+- Single-pass algorithm for counting all metrics
+- Error handling with partition_map from itertools
+- fold_options for elegant Option<usize> summing
+- Output alignment: {:>7} for lines, {:>8} for words/chars
+- Only shows totals when processing multiple files
 
-## Next Task
-After completion: [Stack Inspector Task](stack_inspector_task.md) - Low-level programming with naked functions
+## Lessons Learned
+- `Result<T, E>` and `?` operator for error propagation
+- Iterator methods: partition_map, fold_options
+- anyhow's Context trait for better error messages
+- Integration testing with assert_cmd and predicates
+- Importance of letting learner implement first, then iterate
+
+## Task Completed ✓
+Moving to next task: [Stack Inspector Task](stack_inspector_task.md) - Low-level programming with naked functions

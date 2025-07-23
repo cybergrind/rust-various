@@ -113,15 +113,15 @@ fn run_wordcount(args: Args) -> Result<Stats> {
 
 fn print_file_stat(file: &FileStats) {
     if let Some(lines) = file.lines {
-        print!("{}", lines);
+        print!("{:>7}", lines);
     }
     if let Some(words) = file.words {
-        print!("\t{}", words);
+        print!("{:>8}", words);
     }
     if let Some(chars) = file.chars {
-        print!("\t{}", chars);
+        print!("{:>8}", chars);
     }
-    println!("\t{}", file.name);
+    println!(" {}", file.name);
 }
 
 fn print_stats(stats: &Stats) {
@@ -136,19 +136,19 @@ fn print_stats(stats: &Stats) {
 
     // print total only if there are more than one file
     if stats.files.len() == 1 {
-        return
+        return;
     }
 
     if let Some(total_lines) = stats.total_lines {
-        print!("{}", total_lines)
+        print!("{:>7}", total_lines)
     }
     if let Some(total_words) = stats.total_words {
-        print!("\t{}", total_words);
+        print!("{:>8}", total_words);
     }
     if let Some(total_chars) = stats.total_chars {
-        print!("\t{}", total_chars);
+        print!("{:>8}", total_chars);
     }
-    println!("\ttotal")
+    println!(" total")
 }
 
 fn main() {
