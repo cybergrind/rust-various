@@ -1,15 +1,16 @@
 # Stack Inspector Task
 
 ## Task Overview
-Create a simple stack inspection tool using Rust's naked functions feature to demonstrate low-level stack manipulation and assembly programming.
+Create a simple stack inspection tool using Rust's naked functions feature to demonstrate low-level stack manipulation and assembly programming. **This will be implemented as a separate binary with cross-platform support for Linux and macOS (ARM64).**
 
 ## Learning Goals
 - Understand and use naked functions (`#[unsafe(naked)]`)
 - Work with inline assembly via `naked_asm!`
-- Learn about calling conventions and ABIs
+- Learn about calling conventions and ABIs (x86_64 and ARM64)
 - Practice unsafe Rust in a controlled environment
 - Understand stack frames and function call mechanics
 - Work with raw pointers safely
+- **Master cross-platform assembly (Linux/macOS on ARM64)**
 
 ## Requirements
 1. **Stack Frame Walker**
@@ -33,14 +34,16 @@ Create a simple stack inspection tool using Rust's naked functions feature to de
 ## Technical Requirements
 - Use `#[unsafe(naked)]` attribute (requires Rust 1.88+)
 - Use `core::arch::naked_asm!` for assembly
-- Target x86_64 initially (can add ARM64 later)
-- Handle platform differences gracefully
+- **Target both x86_64 and ARM64 architectures**
+- **Support Linux and macOS (focus on ARM64 for macOS)**
+- Handle platform differences gracefully with `cfg` attributes
 - Document safety requirements clearly
+- Implement as a separate binary in `src/bin/stackinspector.rs`
 
 ## Example Usage
 ```bash
 # Run stack inspector
-./stack_inspector
+./stackinspector
 
 # Output might show:
 Stack Frame Walker:
@@ -54,7 +57,7 @@ Profiler:
   Checkpoint B to C: 5678 cycles
 
 # Test exception handler
-./stack_inspector --test-crash
+./stackinspector --test-crash
 ```
 
 ## Safety Considerations
@@ -64,31 +67,32 @@ Profiler:
 - Use proper compiler barriers where needed
 - Test on single platform first before generalizing
 
-## Progress
-- [x] Set up project with edition 2024
-- [x] Implement basic naked function example
-- [x] Create stack pointer capture function
-- [x] Implement frame walker logic
-- [x] Add cycle counter reading
-- [x] Create profiling checkpoint system
-- [ ] Implement signal handler setup
+## Progress (Fresh Implementation)
+- [ ] Create new binary `src/bin/stackinspector.rs`
+- [ ] Implement naked function for stack pointer capture (x86_64)
+- [ ] Implement naked function for stack pointer capture (ARM64)
+- [ ] Create cross-platform frame walker logic
+- [ ] Add cycle counter reading (x86_64 with RDTSC)
+- [ ] Add cycle counter reading (ARM64 with system registers)
+- [ ] Create profiling checkpoint system
+- [ ] Implement signal handler setup (if feasible)
 - [ ] Add exception handling logic
-- [x] Write comprehensive safety documentation
+- [ ] Write comprehensive safety documentation
 - [ ] Add tests (where possible with unsafe code)
 
 ## Current Status
-Task partially completed! Created two demonstration programs:
+**Starting fresh implementation as a separate binary!**
 
-1. **naked_function_demo.rs** - Shows naked function basics:
-   - Simple constant return
-   - Function with arguments following x86_64 ABI
-   - Stack pointer and return address access
-   
-2. **stack_inspector.rs** - Stack inspection without naked functions:
-   - Stack/frame pointer access via inline assembly
-   - Recursive stack growth demonstration
-   - Local variable layout analysis
-   - CPU cycle counting with RDTSC
+Previous reference implementations available in `reference_implementations/`:
+1. **naked_function_demo.rs** - Shows naked function basics (x86_64 only)
+2. **stack_inspector.rs** - Stack inspection without naked functions
+
+New implementation will:
+- Be created as `src/bin/stackinspector.rs`
+- Support both x86_64 and ARM64 architectures
+- Work on Linux and macOS (ARM64)
+- Use proper naked functions with `#[unsafe(naked)]`
+- Include platform-specific assembly with `cfg` attributes
 
 ## Key Learnings
 - Naked functions stabilized in Rust 1.88.0
@@ -112,7 +116,10 @@ Task partially completed! Created two demonstration programs:
 
 ## Implementation Notes
 - Start with simple assembly (just reading registers)
-- Use `#[cfg(target_arch = "x86_64")]` for platform-specific code
+- Use `#[cfg(target_arch = "x86_64")]` and `#[cfg(target_arch = "aarch64")]` for architecture-specific code
+- Use `#[cfg(target_os = "linux")]` and `#[cfg(target_os = "macos")]` for OS-specific code
+- ARM64 calling convention: x29 (FP), x30 (LR), SP for stack
+- x86_64 calling convention: RBP (FP), RSP (stack), return address on stack
 - Consider using `libc` crate for signal handling
 - May need to disable optimizations for some functions
 - Reference compiler-builtins for naked function examples
