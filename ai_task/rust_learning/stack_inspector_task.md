@@ -81,18 +81,32 @@ Profiler:
 - [ ] Add tests (where possible with unsafe code)
 
 ## Current Status
-**Starting fresh implementation as a separate binary!**
+**Resuming April 2026 after ~9 month pause.** Dev machine is x86_64 Linux (Rust nightly 1.96.0, edition 2024).
 
-Previous reference implementations available in `reference_implementations/`:
+### Done so far
+- x86_64 `get_stack_pointer()` (reads `rbp`) and aarch64 version (reads `sp`) — both naked functions
+- Frame walker using `rbp` chain: `[rbp]` = prev frame pointer, `[rbp+8]` = return address
+- Heuristic pointer validation (null, alignment, direction, stack size bounds)
+- Recursive `loop_before_walk()` to test deep stacks
+- Discovered: `rbp` walking requires `-C force-frame-pointers=yes` (without it, `rbp` is used as a general-purpose register)
+- Discovered: `#[inline(never)]` prevents inlining but not tail call optimization in release mode; `std::hint::black_box` after recursive call prevents TCO
+
+### Next: Universal stack walking via DWARF `.eh_frame`
+The `rbp`-based walker only works with frame pointers enabled. A universal approach uses `.eh_frame` (DWARF unwind info), which is always present in the binary regardless of compiler flags. Plan:
+- Use `gimli` crate for `.eh_frame` parsing (CIE/FDE records, CFA opcodes)
+- Only need `rsp` and `rip` from naked functions — no `rbp` dependency
+- Keep existing `rbp`-based walker available via a clap flag (e.g., `--mode rbp` vs `--mode dwarf`)
+- This also serves as a learning exercise for the `gimli` crate and DWARF format
+
+### Reference implementations
+Available in `reference_implementations/`:
 1. **naked_function_demo.rs** - Shows naked function basics (x86_64 only)
 2. **stack_inspector.rs** - Stack inspection without naked functions
 
-New implementation will:
-- Be created as `src/bin/stackinspector.rs`
-- Support both x86_64 and ARM64 architectures
-- Work on Linux and macOS (ARM64)
+### Implementation approach
+- `src/bin/stackinspector.rs` with clap CLI
+- Support both x86_64 and ARM64 architectures via `cfg` attributes
 - Use proper naked functions with `#[unsafe(naked)]`
-- Include platform-specific assembly with `cfg` attributes
 
 ## Key Learnings
 - Naked functions stabilized in Rust 1.88.0
@@ -102,6 +116,10 @@ New implementation will:
 - Manual ABI compliance required
 - Stack grows downward on x86_64
 - Can measure function overhead with RDTSC
+- Without `-C force-frame-pointers=yes`, compiler uses `rbp` as a general-purpose register — `rbp` chain walking breaks
+- `.eh_frame` (DWARF unwind info) is always present in the binary, regardless of frame pointer settings
+- `#[inline(never)]` prevents inlining but NOT tail call optimization; use `std::hint::black_box` after recursive calls to prevent TCO
+- Debug mode doesn't inline/TCO so `#[inline(never)]` is redundant there — only matters for release builds
 
 ## Implementation Challenges
 - Initial syntax confusion (attribute changed in 1.88)
