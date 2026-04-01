@@ -21,10 +21,9 @@ This is a Rust learning project consisting of various small units to explore dif
 ### Important Instructions for Claude Code
 
 1. **Verify Information**: Use WebSearch and WebFetch to check Rust documentation, The Rust Book, and Rustonomicon to ensure accuracy
-2. **Sub-Agent Delegation**: When needed, use `npx @anthropic-ai/claude-code --permission-mode=acceptEdits -p <PROMPT>` to delegate tasks for verification
-3. **Progress Tracking**: Maintain a living plan document in `ai_task/rust_learning/status.md` following the rules in `ai_context/aa_main_rules.md`
-4. **Code Quality**: Suggest improvements and best practices while teaching
-5. **Flexibility**: The learning plan should evolve based on progress and interests
+2. **Progress Tracking**: Maintain living plan documents in `ai_task/` for each task
+3. **Code Quality**: Suggest improvements and best practices while teaching
+4. **Flexibility**: The learning plan should evolve based on progress and interests
 
 ### User's Preferred Working Style
 - User prefers to figure out implementation details independently
@@ -34,23 +33,19 @@ This is a Rust learning project consisting of various small units to explore dif
 - Focus on answering questions and providing targeted help
 
 
-
 ## Development Commands
 
 ### Building
 - `cargo build` - Build the project in debug mode
 - `cargo build --release` - Build with optimizations
-- `cargo build -p <package>` - Build specific package (if workspace grows)
 
 ### Running
-- `cargo run` - Run the main binary
-- `cargo run --release` - Run with optimizations
-- `cargo run -- <args>` - Run with command line arguments
+- `cargo run --bin <name>` - Run a specific binary (greeting, wordcount, stackinspector)
+- `cargo run --bin <name> -- <args>` - Run with command line arguments
 
 ### Testing
 - `cargo test` - Run all tests
 - `cargo test <test_name>` - Run specific test by name
-- `cargo test --release` - Run tests with optimizations
 - `cargo test -- --nocapture` - Show println! output during tests
 
 ### Other Common Commands
@@ -58,35 +53,24 @@ This is a Rust learning project consisting of various small units to explore dif
 - `cargo clippy` - Run the Rust linter
 - `cargo fmt` - Format code according to Rust style guidelines
 
-## AI Context Structure
+## AI Task Structure
 
-This project follows a specific structure for AI-assisted development:
-
-- `ai_context/` - Contains AI-related documentation and rules
-  - `aa_main_rules.md` - Main rules for AI context management
-  - `howto_code_overview.md` - Guidelines for code documentation
-- `ai_project/` - General project-related AI documentation (to be created as needed)
-- `ai_task/` - Task-specific documentation (to be created as needed)
-
-When working on tasks, always follow the rules in `ai_context/aa_main_rules.md` which emphasize:
-- Creating living documents for task tracking
-- Maintaining proper file organization
-- Adding backlinks in code comments to relevant documentation
-- Documenting findings progressively
+- `ai_task/` - Task-specific documentation and living plan documents
+- Each task gets its own markdown file tracking goals, progress, and learnings
 
 ## Current Architecture
 
-Currently, the project has a minimal structure:
-- Single main.rs file with a basic "Hello, world!" program
-- No dependencies declared in Cargo.toml
-- No tests or benchmarks yet implemented
+- Each learning unit is a separate binary in `src/bin/` (greeting, wordcount, stackinspector)
+- `src/main.rs` exists but is unused (Hello World placeholder)
+- Dependencies: `clap` (CLI), `anyhow` (error handling), `itertools`, `either`
+- Dev dependencies: `assert_cmd`, `predicates` (for integration tests)
 
 ## Current Task
-Ready to start: [Stack Inspector Task](ai_task/rust_learning/stack_inspector_task.md) - Low-level programming with naked functions
+In progress: [Stack Inspector Task](ai_task/rust_learning/stack_inspector_task.md) - Low-level programming with naked functions (just started — basic stack pointer capture on ARM64)
 
 ## Completed Tasks
-- ✓ [Greeting CLI Task](ai_task/rust_learning/greeting_cli_task.md) - Simple CLI tool with clap
-- ✓ [Word Count CLI Task](ai_task/rust_learning/wordcount_cli_task.md) - File I/O and error handling with anyhow (with aligned output)
+- [Greeting CLI Task](ai_task/rust_learning/greeting_cli_task.md) - Simple CLI tool with clap
+- [Word Count CLI Task](ai_task/rust_learning/wordcount_cli_task.md) - File I/O and error handling with anyhow (with aligned output)
 
 ## Learning Progress Notes
 - User prefers to implement first, then iterate with guidance
